@@ -24,7 +24,11 @@ namespace Trello
             {
 
             };
-            tasksList.Add(new Task { Title = title, Description = descr, user = new User(userName)}) ;
+            try
+            {
+                tasksList.Add(new Task { Title = title, Description = descr, user = new User(userName) });
+            }
+            catch { }
         }
         public void CreateUser()
         {
@@ -36,7 +40,11 @@ namespace Trello
                 {
 
                 };
-                usersList.Add(new User(userName));
+                try
+                {
+                    usersList.Add(new User(userName));
+                }
+                catch { }
             }
 
         }
