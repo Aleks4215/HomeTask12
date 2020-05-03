@@ -79,6 +79,8 @@ namespace Trello
                 Console.WriteLine("Incorrect status number!");
 
             tasksList[taskNumber].TaskStatus = (TaskStatus)statusNumber;
+            if (tasksList[taskNumber].user != null)
+                Console.WriteLine("Status of task has changed");
 
             ShowAllTasks();
 
