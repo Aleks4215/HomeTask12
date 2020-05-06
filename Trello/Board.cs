@@ -6,6 +6,8 @@ namespace Trello
 {
     public class Board
     {
+        public delegate void StatusWasChanged();
+        public event StatusWasChanged Status;   
         public List<Task> tasksList;
         public List<User> usersList;
  
@@ -19,16 +21,20 @@ namespace Trello
             var descr = Console.ReadLine();
             Console.WriteLine("Input task member:");
             var userName = Console.ReadLine();
-
-            tasksList = new List<Task>
-            {
-
-            };
             try
             {
                 tasksList.Add(new Task { Title = title, Description = descr, user = new User(userName) });
             }
-            catch { }
+            catch(NullReferenceException)
+            {
+                tasksList = new List<Task>
+                {
+
+                };
+            }
+
+            
+            
         }
         public void CreateUser()
         {
@@ -36,15 +42,17 @@ namespace Trello
             var userName = Console.ReadLine();
             if(!String.IsNullOrWhiteSpace(userName))
             {
-                usersList = new List<User>
-                {
-
-                };
                 try
                 {
-                    usersList.Add(new User(userName));
+                  usersList.Add(new User(userName));
+                } catch(NullReferenceException)
+                {
+                    usersList = new List<User>
+                    {
+
+                    };
                 }
-                catch { }
+                
             }
 
         }
@@ -57,8 +65,7 @@ namespace Trello
         }
         public void ShowAllUsers()
         {
-            Console.WriteLine("Number");
-            usersList.ForEach(u => Console.WriteLine($"{tasksList.IndexOf(u)}"));
+            usersList.ForEach(u => Console.WriteLine($"{usersList}"));
         }
         private void ShowAllStatuses()
         {
@@ -87,8 +94,11 @@ namespace Trello
                 Console.WriteLine("Incorrect status number!");
 
             tasksList[taskNumber].TaskStatus = (TaskStatus)statusNumber;
-            if (tasksList[taskNumber].user != null)
-                Console.WriteLine("Status of task has changed");
+            if(tasksList[taskNumber].user != null)
+            {
+                Status();
+                Console.WriteLine("Status of task was changed");
+            }
 
             ShowAllTasks();
 
@@ -219,5 +229,6 @@ namespace Trello
                 }
             }
         }
+
     }
 }

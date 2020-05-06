@@ -9,7 +9,7 @@ namespace Trello
             User alex = new User("Alex");
             User kolya = new User("Kolya");
             Board board = new Board();
-            
+            board.Status += board.ChangeTaskStatus;
             board.ShowMainMenu();
             
         }
